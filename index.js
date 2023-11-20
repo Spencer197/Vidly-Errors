@@ -16,8 +16,13 @@ const express = require('express');
 const app = express();
 
 process.on('uncaughtException', (ex) => {//Throws an uncaught exception
-  console.log('WE GOT AN UNCAUGHT EXCEPTION!');
-  winston.error(ex.message, ex);
+  winston.error(ex.message, ex);//winston logs/handles the uncaught exception in logfile.log
+  process.exit(1);//Process is exited with 1 or failure
+});
+
+process.on('unhandledRejection', (ex) => {//Throws an unhandled promise rejection
+  winston.error(ex.message, ex);//winston logs/handles the rejection in logfile.log 
+  process.exit(1);//Process is exited with 1 or failure
 });
 
 winston.add(winston.transports.File, { filename: 'logfile.log'});
