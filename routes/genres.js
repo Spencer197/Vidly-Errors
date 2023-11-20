@@ -1,20 +1,26 @@
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
-const {Genre, validate} = require('../models/genre');
+const {Genre, validate} = require('../models/genre')
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
-  try {
+function asyncMiddleware(handlers) {
+  return async(req, res, next) => {
+    try {
+      await handler(req, res);
+    }
+    catch(ex) {
+      next(ex);
+    }
+  };
+  
+}
+
+router.get('/', asyncMiddlewer(async (req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
-  
-  }
-  catch (ex) {
-    next(ex);
-  }
-});
+}));
   
 
 router.post('/', auth, async (req, res) => {
