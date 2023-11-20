@@ -15,10 +15,9 @@ const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
 
-process.on('uncaughtException', (ex) => {//Throws an uncaught exception
-  winston.error(ex.message, ex);//winston logs/handles the uncaught exception in logfile.log
-  process.exit(1);//Process is exited with 1 or failure
-});
+//Just let winston handle exceptions without process object - Can't handle unhandled rejections though. 
+winston.handleExceptions(
+  new winston.transports.File({ filename: 'uncaughtExceptions.log' }));//File system doesn't crash like MDB can
 
 process.on('unhandledRejection', (ex) => {//Throws an unhandled promise rejection
   winston.error(ex.message, ex);//winston logs/handles the rejection in logfile.log 
