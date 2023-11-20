@@ -1,3 +1,4 @@
+require(express-async-errors);//Downloaded NPM module - Don't need to store result in const - optional approach 
 const error = require('./middle/error');
 const config = require('config');
 const Joi = require('joi');
