@@ -20,8 +20,7 @@ winston.handleExceptions(
   new winston.transports.File({ filename: 'uncaughtExceptions.log' }));//File system doesn't crash like MDB can
 
 process.on('unhandledRejection', (ex) => {//Throws an unhandled promise rejection
-  winston.error(ex.message, ex);//winston logs/handles the rejection in logfile.log 
-  process.exit(1);//Process is exited with 1 or failure
+  throw ex;//Throws an exception so that winston can handle it.
 });
 
 winston.add(winston.transports.File, { filename: 'logfile.log'});
