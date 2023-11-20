@@ -1,4 +1,5 @@
-require(express-async-errors);//Downloaded NPM module - Don't need to store result in const - optional approach 
+require(express-async-errors);//Downloaded NPM module - Don't need to store result in const - optional approach
+const winston = require('winston'); 
 const error = require('./middle/error');
 const config = require('config');
 const Joi = require('joi');
@@ -12,6 +13,8 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
+
+winston.add(winston.transport.File, { filename: 'logfile.log'});
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
